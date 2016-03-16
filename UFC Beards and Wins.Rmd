@@ -1,0 +1,94 @@
+---
+title: "UFC Beards"
+output: pdf_document
+---
+A first Brad-Terry analysis of UFC Beards and wins and losses.
+
+First the libraries that we are using
+```{r}
+library(BradleyTerry2)
+library(dplyr)
+library(knitr)
+```
+Then load the data which comes from Mike.  Note the as.is thing which leaves all the character vectors as strings and does not make them into factors.
+
+```{r}
+winner<-read.csv("UFC_winner.csv",as.is=T)
+loser<-read.csv("UFC_loser.csv",as.is=T)
+predictors<-read.csv("UFC_predictors.csv",as.is=T)
+```
+Turns out that th weird BradleyTerry thing needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files
+
+```{r}
+names(predictors)[1]<-"ID"
+predictors<-arrange(predictors,ID)
+row.names(predictors)<-predictors$ID
+names(winner)[1]<-"ID"
+names(loser)[1]<-"ID"
+```
+
+Now stick the winner and loser files together.  This is a bit of a hack to get the levels of the factor to play nice
+
+```{r}
+all<-rbind(winner,loser)
+```
+
+And add a column to keep the winners and losers labeled
+
+```{r}
+all$winning<-c(rep("yes",length(winner$ID)),rep("no",length(winner$ID)))
+```
+
+Now turn the unique IDs into a factor.
+```{r}
+all$ID<-as.factor(all$ID)
+```
+
+And split the data.frame into winners and losers.  Now with the levels correct so that all the matching works
+
+```{r}
+winner2<-filter(all,winning=="yes")
+loser2<-filter(all,winning=="no")
+```
+
+Assemble it into a list of data.frames.  This follows the chameleon example from their help thingie.  Probably not strictly necessary.
+
+```{r}
+beards<-list(winner=winner2,loser=loser2,predictors=predictors)
+```
+
+And at last do the model.  In this framework the [ID] thing is used for individual level covariates
+
+```{r}
+model1<-BTm(player1=winner,player2=loser,
+            formula = ~ prev + facehair + ht[ID] + wt[ID] + reach[ID] +   
+            (1|ID), id="ID",data=beards)
+
+summary(model1)
+```
+
+And report some summary stuff from the model
+
+```{r}
+model2<-BTm(player1=winner,player2=loser,
+            formula = ~ prev + facehair  + ht[ID] + reach[ID] + stance[ID] +
+            (1|ID), id="ID",data=beards)
+
+summary(model2)
+```
+
+Looking at the distribution of 'method'
+
+```{r}
+table(predictors$method)
+```
+
+
+
+```{r}
+model3<-BTm(player1=winner,player2=loser,
+            formula = ~ prev + facehair  + method + ht[ID] + reach[ID] + method*facehair
+            (1|ID), id="ID",data=beards)
+
+summary(model3)
+```

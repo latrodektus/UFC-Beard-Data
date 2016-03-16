@@ -1,0 +1,396 @@
+ID,name,ht,wt,reach,stance,class
+1,Aaron Riley,68,155,69,Southpaw ,Lightweight
+2,Abel Trujillo,68,155,70,Orthodox ,Lightweight
+3,Al Iaquinta,69,155,70,Orthodox ,Lightweight
+4,Alan Belcher,74,185,73,Orthodox ,Middleweight
+5,Alan Jouban,72,170,73,Southpaw ,Welterweight
+6,Alberto Crane,65,155,,Orthodox ,Lightweight
+7,Alessio Sakara,72,185,72,Orthodox ,Light Heavyweight
+8,Alexander Gustafsson,77,205,79,Orthodox ,Light heavyweight
+9,Ali Bagautinov,64,125,65,Orthodox ,Flyweight
+10,Alistair Overeem,76,265,80,Orthodox ,Heavyweight
+11,Alvin Robinson,69,155,68,Southpaw ,Lightweight
+12,Amir Sadollah,70,170,74,Orthodox ,Welterweight
+13,Anderson Silva,74,185,77,Southpaw ,Middleweight
+14,Andre Fili,71,145,74,Orthodox ,Featherweight
+15,Andre Winner,71,155,73,Orthodox ,Lightweight
+16,Andrei Arlovski,75,240,77,Orthodox ,Heavyweight
+17,Anthony Hamilton,77,260,76,Orthodox ,Heavyweight
+18,Anthony Johnson,74,205,78,Orthodox ,Welterweight
+19,Anthony Perosh,75,205,75,Orthodox ,Heavyweight
+20,Anthony Pettis,70,155,72,Orthodox ,Lightweight
+21,Antoni Hardonk,76,245,78,Orthodox ,Heavyweight
+22,Antonio Banuelos,65,135,63,Orthodox ,Bantamweight
+23,Antonio Mendes,75,205,77,Southpaw ,Light Heavyweight
+24,Antonio Rogerio Nogueira,74,205,75,Southpaw ,Heavyweight
+25,Antonio Silva,76,264,80,Orthodox ,Heavyweight
+26,Augusto Montano,73,170,73,Orthodox ,Welterweight
+27,B.J. Penn,68,145,70,Orthodox ,Welterweight
+28,Bart Palaszewski,69,145,70,Orthodox ,Featherweight
+29,Ben Rothwell,76,265,78,Orthodox ,Heavyweight
+30,Ben Saunders,74,170,77,Orthodox ,Welterweight
+31,Beneil Dariush,70,155,72,Southpaw ,Lightweight
+32,Benson Henderson,69,170,70,Southpaw ,Lightweight
+33,Brad Pickett,66,135,68,Orthodox ,Bantamweight
+34,Brad Tavares,73,185,74,Orthodox ,Middleweight
+35,Brandon Thatch,74,170,74,Switch ,Welterweight
+36,Brandon Vera,75,230,76,Orthodox ,Heavyweight
+37,Brendan Schaub,76,245,78,Orthodox ,Heavyweight
+38,Brian Bowles,67,135,70,Orthodox ,Bantamweight
+39,Brian Ebersole,72,170,73,Southpaw ,Welterweight
+40,Brian Stann,73,205,74,Orthodox ,Light Heavyweight
+41,Brock Lesnar,75,265,81,Orthodox ,Heavyweight
+42,Buddy Roberts,74,185,76,Orthodox ,Middleweight
+43,Cain Velasquez,73,240,77,Orthodox ,Heavyweight
+44,Caol Uno,67,155,70,Southpaw ,Lightweight
+45,Carlo Prater,71,155,72,Switch ,Welterweight
+46,Carlos Condit,74,170,75,Orthodox ,Welterweight
+47,Carlos Diego Ferreira,69,155,74,Orthodox ,Lightweight
+48,Carlos Eduardo Rocha,70,170,70,Orthodox ,Welterweight
+49,CB Dollaway,74,185,76,Orthodox ,Middleweight
+50,Cezar Ferreira,73,170,78,Southpaw ,Middleweight
+51,Chad Mendes,66,145,66,Orthodox ,Featherweight
+52,Chael Sonnen,73,205,74,Southpaw ,Middleweight
+53,Chan Sung Jung,67,145,74,Orthodox ,Featherweight
+54,Charles McCarthy,70,185,71,Orthodox ,Middleweight
+55,Charles Oliveira,70,145,74,Orthodox ,Lightweight
+56,Charles Rosa,69,145,69,Switch ,Featherweight
+57,Che Mills,73,170,76,Orthodox ,Welterweight
+58,Cheick Kongo,76,240,82,Orthodox ,Heavyweight
+59,Chris Camozzi,74,185,76,Orthodox ,Middleweight
+60,Chris Cariaso,63,125,63,Southpaw ,Flyweight
+61,Chris Clements,70,170,70,Orthodox ,Welterweight
+62,Chris Heatherly,69,155,68,Orthodox ,Welterweight
+63,Chris Leben,71,185,74,Southpaw ,Middleweight
+64,Chris Lytle,71,170,68,Orthodox ,Welterweight
+65,Chris Weidman,74,185,78,Orthodox ,Middleweight
+66,Chris Wilson,73,170,75,Orthodox ,Welterweight
+67,Chuck Liddell,74,205,76,Orthodox ,Light Heavyweight
+68,Claude Patrick,71,170,75,Orthodox ,Welterweight
+69,Clay Guida,67,145,70,Orthodox ,Light Heavyweight
+70,Clifford Starks,72,185,77,Orthodox ,Middleweight
+71,Cody McKenzie,72,155,72,Switch ,Featherweight
+72,Colin Fletcher,74,155,78,Orthodox ,Lightweight
+73,Conor McGregor,69,170,74,Southpaw ,Featherweight
+74,Corey Anderson,75,205,79,Open Stance ,Light Heavyweight
+75,Costas Philippou,71,185,73,Orthodox ,Middleweight
+76,Court McGee,71,170,76,Orthodox ,Welterweight
+77,Cub Swanson,68,145,70,Orthodox ,Catchweight (146.2 lbs.)
+78,Cung Le,69,185,69,Southpaw ,Middleweight
+79,Cyrille Diabate,78,205,81,Southpaw ,Light Heavyweight
+80,Damian Maia,72,170,72,Southpaw ,Welterweight
+81,Damon Jackson,71,145,71,Switch ,Lightweight
+82,Dan Hardy,72,170,74,Orthodox ,Welterweight
+83,Dan Henderson,71,185,74,Orthodox ,Light Heavyweight
+84,Dan Miller,73,185,74,Orthodox ,Middleweight
+85,Daniel Cormier,71,205,72,Orthodox ,Light Heavyweight
+86,Danny Castillo,69,155,71,Orthodox ,Lightweight
+87,Darrell Montague,66,125,67,Southpaw ,Flyweight
+88,Darren Elkins,70,145,71,Orthodox ,Featherweight
+89,Dave Herman,76,242,76,Orthodox ,Heavyweight
+90,Demetrious Johnson,63,125,66,Orthodox ,Flyweight
+91,Demian Maia,73,170,72,Southpaw ,Middleweight
+92,Denis Kang,71,185,77,Orthodox ,Middleweight
+93,Dennis Bermudez,66,145,66,Orthodox ,Featherweight
+94,Dennis Hallman,69,155,72,Orthodox ,Welterweight
+95,Dennis Siver,66,145,70,Orthodox ,Featherweight
+96,Derek Brunson,73,185,77,Southpaw ,Middleweight
+97,Diego Brandao,67,145,68,Orthodox ,Catchweight (151.5 lbs)
+98,Diego Nunes,66,145,67,Orthodox ,Featherweight
+99,Diego Sanchez,70,155,72,Southpaw ,Welterweight
+100,Dileno Lopes,65,135,65,,Bantamweight
+101,Dominick Cruz,68,135,68,Orthodox ,Bantamweight
+102,Donald Cerrone,73,170,73,Orthodox ,Lightweight
+103,Dong Hyun Kim,74,170,76,Southpaw ,Welterweight
+104,Drew McFedries,72,185,72,Southpaw ,Middleweight
+105,Duane Ludwig,70,170,70,Orthodox ,Lightweight
+106,Dustin Hazelett,73,170,76,Orthodox ,Catchweight(172 lb)
+107,Dustin Poirier,69,155,72,Southpaw ,Featherweight
+108,Ed Herman,73,205,77,Orthodox ,Middleweight
+109,Eddie Alvarez,69,155,69,Orthodox ,Lightweight
+110,Eddie Sanchez,74,230,74,Orthodox ,Heavyweight
+111,Eddie Wineland,67,135,69,Orthodox ,Bantamweight
+112,Eddie Yagin,67,145,69,Orthodox ,Featherweight
+113,Edgar Garcia,70,170,71,Orthodox ,Welterweight
+114,Edson Barboza,71,155,75,Orthodox ,Lightweight
+115,Edward Faaloloto,69,155,70,,Lightweight
+116,Eric Schafer,75,185,75,Orthodox ,Light Heavyweight
+117,Erick Silva,72,170,74,Orthodox ,Welterweight
+118,Erik Koch,70,155,70,Southpaw ,Featherweight
+119,Evan Dunham,70,155,70,Southpaw ,Lightweight
+120,Evan Tanner,72,185,74,Orthodox ,Middleweight
+121,Fabio Maldonado,73,205,75,Orthodox ,Light Heavyweight
+122,Fabricio Camoes,70,155,73,Orthodox ,Lightweight
+123,Fabricio Werdum,76,231,77,Orthodox ,Heavyweight
+124,Fernando Bruno,66,155,70,,Lightweight
+125,Forrest Griffin,75,205,77,Orthodox ,Light Heavyweight
+126,Francis Carmont,75,205,78,Orthodox ,Middleweight
+127,Francisco Rivera,68,135,68,Orthodox ,Bantamweight
+128,Frank Mir,75,264,79,Southpaw ,Heavyweight
+129,Frank Trigg,69,170,71,Southpaw ,Welterweight
+130,Frankie Edgar,66,145,68,Orthodox ,Lightweight
+131,Gabriel Gonzaga,74,242,76,Orthodox ,Heavyweight
+132,George Roop,73,135,72,Orthodox ,Featherweight
+133,George Sotiropoulos,70,155,71,Orthodox ,Lightweight
+134,Georges St-Pierre,71,170,76,Orthodox ,Welterweight
+135,Gerald Harris,71,185,77,Southpaw ,Middleweight
+136,Gilbert Melendez,69,155,73,Orthodox ,Lightweight
+137,Gilbert Yvel,74,205,77,Switch ,Heavyweight
+138,Glaico Franca,72,155,77,Orthodox ,Lightweight
+139,Gleison Tibau,70,155,71,Southpaw ,Lightweight
+140,Glover Teixeira,74,205,76,Orthodox ,Light Heavyweight
+141,Godofredo Pepey,67,145,73,Orthodox ,Featherweight
+142,Goran Reljic,75,205,81,Southpaw ,Light Heavyweight
+143,Gray Maynard,69,155,70,Orthodox ,Lightweight
+144,Gunnar Nelson,71,170,72,Switch ,Welterweight
+145,Hacran Dias,68,145,69,Orthodox ,Featherweight
+146,Hans Stringer,75,205,73,Orthodox ,Light Heavyweight
+147,Hatsu Hioki,71,145,70,Orthodox ,Featherweight
+148,Heath Herring,76,250,78,Orthodox ,Heavyweight
+149,Hector Lombard,69,170,71,Southpaw ,Middleweight
+150,Hector Ramirez,72,205,73,Orthodox ,Light Heavyweight
+151,Hector Urbina,71,170,73,Orthodox ,Welterweight
+152,Henry Cejudo,64,125,64,Orthodox ,Flyweight
+153,Hermes Franca,66,155,71,Orthodox ,Lightweight
+154,Houston Alexander,72,205,72,Orthodox ,Light Heavyweight
+155,Ian McCall,65,125,64,Orthodox ,Flyweight
+156,Igor Pokrajac,72,205,74,Orthodox ,Light Heavyweight
+157,Iuri Alcantara,69,135,71,Southpaw ,Featherweight
+158,Ivan Menjivar,66,145,64,Orthodox ,Bantamweight
+159,Ivan Salaverry,72,185,75.5,Orthodox ,Middleweight
+160,Jacob Volkmann,69,155,71,Southpaw ,Welterweight
+161,Jake Ellenberger,69,170,71,Orthodox ,Welterweight
+162,Jake Rosholt,73,185,,Orthodox ,Middleweight
+163,Jake Shields,72,170,72,Orthodox ,Welterweight
+164,James Head,73,170,73,Orthodox ,Welterweight
+165,James Krause,74,155,73,Orthodox ,Lightweight
+166,James Te Huna,74,185,75,Orthodox ,Light Heavyweight
+167,James Toney,69,220,72,Orthodox ,Heavyweight
+168,James Wilks,73,170,75,Orthodox ,Welterweight
+169,Jamie Varner,68,155,72,Orthodox ,Lightweight
+170,Jan B?achowicz,74,205,78,,Light Heavyweight
+171,Jared Rosholt,74,265,75,Orthodox ,Heavyweight
+172,Jason Brilz,71,205,71,Orthodox ,Light Heavyweight
+173,Jason Day,72,185,72,Orthodox ,Middleweight
+174,Jason Lambert,75,185,75,Orthodox ,Light Heavyweight
+175,Jason MacDonald,75,185,80,Orthodox ,Middleweight
+176,Jeff Curran,66,135,69,Orthodox ,Bantamweight
+177,Jeremy Horn,73,185,74,Orthodox ,Middleweight
+178,Jeremy Stephens,68,145,71,Orthodox ,Lightweight
+179,Jess Liaudin,69,170,72,Orthodox ,Welterweight
+180,Jim Miller,68,155,71,Southpaw ,Lightweight
+181,Jimi Manuwa,73,205,79,Orthodox ,Light Heavyweight
+182,Jimy Hettes,69,145,71,Southpaw ,Featherweight
+183,Joe Doerksen,72,185,75,Orthodox ,Middleweight
+184,Joe Lauzon,70,155,71,Orthodox ,Lightweight
+185,Joe Soto,66,135,65,Orthodox ,Bantamweight
+186,Joe Stevenson,67,145,70,Orthodox ,Lightweight
+187,John Alessio,70,155,72,Orthodox ,Lightweight
+188,John Dodson,63,125,66,Orthodox ,Flyweight
+189,John Hathaway,73,170,75,Orthodox ,Welterweight
+190,John Howard,67,170,71,Orthodox ,Welterweight
+191,John Lineker,63,135,67,Orthodox ,Flyweight
+192,John Makdessi,68,155,68,Orthodox ,Lightweight
+193,John Moraga,66,125,66,Orthodox ,Flyweight
+194,Johny Hendricks,69,170,69,Southpaw ,Welterweight
+195,Jon Fitch,72,170,76,Orthodox ,Welterweight
+196,Jon Jones,76,205,84,Orthodox ,Light Heavyweight
+197,Jon Olav Einemo,78,253,81,Orthodox ,Heavyweight
+198,Jordan Mein,72,170,73,Orthodox ,Welterweight
+199,Jorge Gurgel,67,155,69,Orthodox ,Lightweight
+200,Jorge Rivera,73,185,73,Orthodox ,Middleweight
+201,Jorge Santiago,73,170,74,Orthodox ,Middleweight
+202,Jose Aldo,67,145,70,Orthodox ,Featherweight
+203,Jose Maria Tome,65,125,65,,Catchweight (129 lbs)
+204,Joseph Benavidez,64,125,65,Southpaw ,Flyweight
+205,Josh Barnett,75,250,78,Orthodox ,Heavyweight
+206,Josh Burkman,70,170,72,Orthodox ,Welterweight
+207,Josh Hendricks,74,235,69,Southpaw ,Heavyweight
+208,Josh Koscheck,70,170,73,Orthodox ,Welterweight
+209,Josh Neer,71,170,72,Orthodox ,Lightweight
+210,Junior dos Santos,76,238,77,Orthodox ,Heavyweight
+211,Justin Lawrence,68,145,67,Orthodox ,Featherweight
+212,Kalib Starnes,75,185,74,Orthodox ,Middleweight
+213,Kamal Shalorus,68,155,68,Orthodox ,Lightweight
+214,Karo Parisyan,70,170,72,Orthodox ,Welterweight
+215,Kazuhiro Nakamura,71,205,70,Orthodox ,Light Heavyweight
+216,Keith Jardine,74,185,76,Orthodox ,Light Heavyweight
+217,Kelvin Gastelum,69,170,71,Southpaw ,Catchweight (180 lbs)
+218,Kendall Grove,78,185,79,Orthodox ,Middleweight
+219,Kenny Florian,70,145,74,Southpaw ,Lightweight
+220,Khabib Nurmagomedov,70,155,64,Orthodox ,Lightweight
+221,Kimbo Slice,74,234,77,Orthodox ,Heavyweight
+222,KJ Noons,70,155,72,Orthodox ,Lightweight
+223,Krzysztof Soszynski,73,205,77,Open Stance ,Light Heavyweight
+224,Kurt Pellegrino,68,155,70,Orthodox ,Lightweight
+225,Kyle Kingsbury,76,205,76,Orthodox ,Light Heavyweight
+226,Kyle Noke,73,170,76,Southpaw ,Middleweight
+227,Kyoji Horiguchi,65,125,66,Orthodox ,Flyweight
+228,Lavar Johnson,76,240,82,Orthodox ,Heavyweight
+229,Leonard Garcia,70,145,69,Orthodox ,Featherweight
+230,Louis Gaudinot,63,125,63,Orthodox ,Flyweight
+231,Lucas Martins,72,145,72,Southpaw ,Featherweight
+232,Luiz Cane,74,185,77,Southpaw ,Light Heavyweight
+233,Luke Rockhold,75,185,77,Southpaw ,Middleweight
+234,Lyoto Machida,73,185,74,Southpaw ,Light Heavyweight
+235,Mac Danzig,68,155,70,Orthodox ,Lightweight
+236,Maiquel Falcao,71,185,71,Orthodox ,Middleweight
+237,Manvel Gamburyan,65,135,67,Orthodox ,Lightweight
+238,Marcus Aurelio,70,155,74,Orthodox ,Lightweight
+239,Marcus Brimage,64,135,71,Southpaw ,Bantamweight
+240,Marcus Davis,70,170,70,Southpaw ,Welterweight
+241,Mario Miranda,75,185,74,Orthodox ,Middleweight
+242,Mark Bocek,68,155,75,Orthodox ,Lightweight
+243,Mark Coleman,73,205,75,Orthodox ,Light Heavyweight
+244,Mark Hominick,68,145,68,Orthodox ,Featherweight
+245,Mark Hunt,70,265,72,Orthodox ,Heavyweight
+246,Mark Munoz,72,185,72,Orthodox ,Light Heavyweight
+247,Martin Kampmann,72,170,72,Orthodox ,Middleweight
+248,Matt Brown,72,170,75,Orthodox ,Welterweight
+249,Matt Hamill,73,205,76,Orthodox ,Light Heavyweight
+250,Matt Hughes,69,170,73,Switch ,Welterweight
+251,Matt Mitrione,75,265,79,Switch ,Heavyweight
+252,Matt Serra,66,170,68,Orthodox ,Welterweight
+253,Matt Wiman,70,155,68,Orthodox ,Lightweight
+254,Matthew Riddle,73,170,74,Southpaw ,Welterweight
+255,Mauricio Rua,73,205,76,Orthodox ,Light Heavyweight
+256,Max Holloway,71,145,69,Orthodox ,Featherweight
+257,Melvin Guillard,69,155,68,Orthodox ,Lightweight
+258,Michael Bisping,73,185,72,Orthodox ,Light Heavyweight
+259,Michael McDonald,71,205,70,Orthodox ,Bantamweight
+260,Miguel Torres,69,135,76,Orthodox ,Bantamweight
+261,Mike Easton,66,135,70,Southpaw ,Bantamweight
+262,Mike Massenzio,74,185,73,Southpaw ,Middleweight
+263,Mike Pierce,68,170,70,Orthodox ,Welterweight
+264,Mike Pyle,72,170,74,Orthodox ,Welterweight
+265,Mike Ricci,72,155,77,Southpaw ,Lightweight
+266,Mike Russow,73,255,73,Orthodox ,Heavyweight
+267,Mike Swick,73,170,77,Orthodox ,Welterweight
+268,Mirko Filipovic,74,230,73,Southpaw ,Heavyweight
+269,Mostapha Al Turk,74,235,77.5,Orthodox ,Heavyweight
+270,Mostapha Al-turk,74,245,77,Orthodox ,Heavyweight
+271,Myles Jury,70,145,73,Orthodox ,Lightweight
+272,Nam Phan,66,135,70,Orthodox ,Featherweight
+273,Nate Diaz,72,170,76,Southpaw ,Lightweight
+274,Nate Marquardt,72,185,74,Orthodox ,Middleweight
+275,Nate Quarry,72,185,72,Open Stance ,Middleweight
+276,Nick Diaz,73,185,76,Southpaw ,Welterweight
+277,Nick Osipczak,74,170,76,Orthodox ,Welterweight
+278,Nick Ring,72,185,74,Southpaw ,Middleweight
+279,Nikita Krylov,75,205,77,Orthodox ,Light Heavyweight
+280,Ovince Saint Preux,75,205,80,Southpaw ,Light Heavyweight
+281,Pablo Garza,73,145,73,Orthodox ,Featherweight
+282,Papy Abedi,71,185,74,Southpaw ,Welterweight
+283,Pat Barry,71,235,74,Orthodox ,Heavyweight
+284,Pat Healy,72,155,74,Orthodox ,Lightweight
+285,Patrick Cote,71,170,71,Orthodox ,Middleweight
+286,Patrick Cummins,74,205,76,Orthodox ,Light Heavyweight
+287,Paul Buentello,74,245,77,Orthodox ,Heavyweight
+288,Paul Daley,69,170,76,Orthodox ,Welterweight
+289,Paul Kelly,69,155,70,Orthodox ,Welterweight
+290,Paul Taylor,72,155,72,Orthodox ,Welterweight
+291,Paulo Thiago,71,170,73,Orthodox ,Welterweight
+292,Pete Sell,71,170,75,Orthodox ,Welterweight
+293,Peter Sobotta,72,170,75,Southpaw ,Welterweight
+294,Phil Baroni,69,170,72,Orthodox ,Welterweight
+295,Phil Davis,74,205,79,Orthodox ,Light Heavyweight
+296,Quinton Jackson,73,205,73,Orthodox ,Light Heavyweight
+297,Rafael Cavalcante,73,206,74,,Light Heavyweight
+298,Rafael dos Anjos,68,155,70,Orthodox ,Lightweight
+299,Rameau Thierry Sokoudjou,70,205,78,Orthodox ,Light Heavyweight
+300,Ramsey Nijem,71,155,75,Orthodox ,Lightweight
+301,Randy Couture,73,205,75,Orthodox ,Heavyweight
+302,Rashad Evans,72,205,75,Orthodox ,Light Heavyweight
+303,Reginaldo Vieira,67,135,65,Orthodox ,Bantamweight
+304,Renan Barao,66,135,70,Orthodox ,Bantamweight
+305,Renzo Gracie,70,185,79,Orthodox ,Welterweight
+306,Ricardo Almeida,72,170,74,Orthodox ,Middleweight
+307,Ricardo Lamas,68,145,71,Orthodox ,Featherweight
+308,Rich Clementi,69,155,72,Southpaw ,Lightweight
+309,Rich Franklin,73,185,75,Southpaw ,Middleweight
+310,Richard Walsh,72,170,73,,Welterweight
+311,Rick Story,69,170,71,Southpaw ,Welterweight
+312,Rob Broughton,74,265,74,,Heavyweight
+313,Rob Emerson,69,155,70,Orthodox ,Lightweight
+314,Robbie Lawler,71,170,74,Southpaw ,Welterweight
+315,Robert Whitaker,72,185,73.5,Orthodox ,Middleweight
+316,Robert Whittaker,72,185,73,Orthodox ,Welterweight
+317,Roger Gracie,76,185,79,Orthodox ,Middleweight
+318,Roger Hollett,71,205,70,Orthodox ,Light Heavyweight
+319,Roger Huerta,69,155,70,Orthodox ,Lightweight
+320,Ronaldo Souza,73,185,72,,Middleweight
+321,Rony Mariano Bezerra,67,145,73,,Featherweight
+322,Rory MacDonald,72,170,76,Orthodox ,Welterweight
+323,Rory Markham,72,170,71,Orthodox ,Welterweight
+324,Rory Singer,74,185,77,Orthodox ,Middleweight
+325,Ross Pearson,68,155,69,Orthodox ,Lightweight
+326,Rousimar Palhares,68,170,71,Orthodox ,Middleweight
+327,Roy Nelson,72,263,72,Orthodox ,Heavyweight
+328,Ruslan Magomedov,75,242,78,Orthodox ,Heavyweight
+329,Russell Doane,67,135,70,Orthodox ,Bantamweight
+330,Ryan Bader,74,205,74,Orthodox ,Light Heavyweight
+331,Ryan Jimmo,73,205,73,Orthodox ,Light Heavyweight
+332,Ryo Chonan,69,170,70,Orthodox ,Welterweight
+333,Sam Stout,69,155,70,Orthodox ,Lightweight
+334,Scott Jorgensen,65,135,66,Orthodox ,Bantamweight
+335,Scott Smith,72,185,70,Orthodox ,Middleweight
+336,Sean McCorkle,79,265,81,Orthodox ,Heavyweight
+337,Sean Sherk,66,155,67,Orthodox ,Lightweight
+338,Sergio Moraes,72,170,72,Orthodox ,Middleweight
+339,Shane Campbell,72,155,71,Orthodox ,Catchweight (160 lbs)
+340,Shane Carwin,74,265,80,Orthodox ,Heavyweight
+341,Shane del Rosario,76,250,79,Southpaw ,Heavyweight
+342,Shane Nelson,69,155,70,Southpaw ,Lightweight
+343,Shawn Jordan,72,260,75,Southpaw ,Heavyweight
+344,Soa Palelei,76,265,81,Orthodox ,Heavyweight
+345,Spencer Fisher,67,155,70,Southpaw ,Lightweight
+346,Stanislav Nedkov,71,205,71,Orthodox ,Light Heavyweight
+347,Stefan Struve,83,265,84,Orthodox ,Heavyweight
+348,Stephan Bonnar,76,205,78,Orthodox ,Light Heavyweight
+349,Stephen Thompson,72,170,75,Orthodox ,Welterweight
+350,Steve Cantwell,74,185,75,Orthodox ,Light Heavyweight
+351,Stipe Miocic,76,240,80,Orthodox ,Heavyweight
+352,Takanori Gomi,67,155,70,Southpaw ,Lightweight
+353,Takeya Mizugaki,67,135,68,Orthodox ,Bantamweight
+354,Tamdan McCrory,76,185,78,Switch ,Welterweight
+355,Terry Etim,73,155,73,Orthodox ,Lightweight
+356,Terry Martin,68,185,71,Orthodox ,Middleweight
+357,Thales Leites,73,185,78,Orthodox ,Middleweight
+358,Thiago Alves,69,170,70,Orthodox ,Welterweight
+359,Thiago Santos,72,185,76,Orthodox ,Middleweight
+360,Thiago Silva,74,205,74,Orthodox ,Light Heavyweight
+361,Thiago Tavares,67,145,68,Orthodox ,Lightweight
+362,Thomas Almeida,67,135,70,Southpaw ,Bantamweight
+363,Tim Boetsch,72,205,74,Orthodox ,Light Heavyweight
+364,Tim Elliott,67,126,66,,Flyweight
+365,Tim Kennedy,71,185,74,Orthodox ,Middleweight
+366,Tim Sylvia,80,265,80,Orthodox ,Heavyweight
+367,Tito Ortiz,75,205,74,Orthodox ,Light Heavyweight
+368,TJ Dillashaw,66,135,67,Orthodox ,Bantamweight
+369,TJ Grant,70,155,72,Orthodox ,Lightweight
+370,TJ Waldburger,71,170,75,Orthodox ,Welterweight
+371,Todd Duffee,75,260,79,Orthodox ,Heavyweight
+372,Tom Lawlor,72,205,74,Southpaw ,Middleweight
+373,Tom Watson,73,185,73,Orthodox ,Middleweight
+374,Tony Ferguson,71,155,76,Orthodox ,Lightweight
+375,Travis Browne,78,255,79,Orthodox ,Heavyweight
+376,Travis Lutter,71,185,75,Orthodox ,Middleweight
+377,Tyron Woodley,69,170,74,Orthodox ,Welterweight
+378,Tyson Griffin,66,145,68,Orthodox ,Lightweight
+379,Uriah Hall,72,185,79,Orthodox ,Middleweight
+380,Urijah Faber,66,135,67,Orthodox ,Bantamweight
+381,Vagner Rocha,70,155,73,Orthodox ,Lightweight
+382,Vinny Magalhaes,75,205,79,Orthodox ,Light Heavyweight
+383,Vitor Belfort,72,185,74,Southpaw ,Middleweight
+384,Vladimir Matyushenko,72,205,74,Orthodox ,Light Heavyweight
+385,Wagner Prado,72,205,74,Southpaw ,Light Heavyweight
+386,Wanderlei Silva,71,205,74,Orthodox ,Light Heavyweight
+387,Wilson Gouveia,73,185,76,Orthodox ,Middleweight
+388,Xavier Foupa-Pokam,73,185,75,Open Stance ,Middleweight
+389,Yair Rodriguez,71,145,71,Orthodox ,Featherweight
+390,Yancy Medeiros,70,155,75,Orthodox ,Lightweight
+391,Yoel Romero,72,185,73,Southpaw ,Middleweight
+392,Yoshihiro Akiyama,70,170,73,Orthodox ,Middleweight
+393,Yoshiyuki Yoshida,71,167,70,Southpaw ,Catchweight(176 lb)
+394,Yushin Okami,74,185,72,Southpaw ,Middleweight
+395,Yves Jabouin,67,135,68,Orthodox ,Bantamweight
