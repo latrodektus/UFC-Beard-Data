@@ -9,6 +9,7 @@ First the libraries that we are using
 library(BradleyTerry2)
 library(dplyr)
 library(knitr)
+source("functions_for_prepping_bt_analysis.R")
 ```
 Then load the data which comes from Mike.  Note the as.is thing which leaves all the character vectors as strings and does not make them into factors.
 
@@ -16,6 +17,12 @@ Then load the data which comes from Mike.  Note the as.is thing which leaves all
 winner<-read.csv("UFC_winner.csv",as.is=T)
 loser<-read.csv("UFC_loser.csv",as.is=T)
 predictors<-read.csv("UFC_predictors.csv",as.is=T)
+winner<-winner[c(-18,-157),]
+loser<-loser[c(-18,-157),]
+predictors<-predictors[c(-6,-162),]
+predictors$stance[predictors$stance==""]<-"other"
+predictors$stance[predictors$stance=="Open Stance "]<-"other"
+predictors$stance[predictors$stance=="Switch "]<-"other"
 ```
 Turns out that th weird BradleyTerry thing needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files
 
@@ -61,7 +68,7 @@ And at last do the model.  In this framework the [ID] thing is used for individu
 
 ```{r}
 model1<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + facehair + ht[ID] + wt[ID] + reach[ID] +   
+            formula = ~ prev + facehair + ht[ID] + reach[ID] +   
             (1|ID), id="ID",data=beards)
 
 summary(model1)
@@ -70,6 +77,7 @@ summary(model1)
 And report some summary stuff from the model
 
 ```{r}
+
 model2<-BTm(player1=winner,player2=loser,
             formula = ~ prev + facehair  + ht[ID] + reach[ID] + stance[ID] +
             (1|ID), id="ID",data=beards)
@@ -77,18 +85,37 @@ model2<-BTm(player1=winner,player2=loser,
 summary(model2)
 ```
 
-Looking at the distribution of 'method'
+
+Does this result depend on the type of victory? 
+
+2 or less is a TKO or KO
+
+Greater than 3 is submission or decision or some other outcome.  Here we split the dataset into those two categories and show that facial hair still does not have an effect.
 
 ```{r}
-table(predictors$method)
-```
+#other wins including decisions and submissions
+w1<-filter(winner,method>=3)
+l1<-filter(loser,method>=3)
+p1<-subset(predictors,predictors$ID%in%w1$ID)
+b.out<-set_up_btm(p1,w1,l1)
+
+model.other.outcomes<-BTm(player1=winner,player2=loser,
+            formula = ~  facehair  + reach[ID] + 
+            (1|ID), id="ID",data=b.out)
+summary(model.other.outcomes)
 
 
+#TKO's and KO's
 
-```{r}
+w1<-filter(winner,method<=2)
+l1<-filter(loser,method<=2)
+p1<-subset(predictors,predictors$ID%in%w1$ID)
+b.out<-set_up_btm(p1,w1,l1)
+
 model3<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + facehair  + method + ht[ID] + reach[ID] + method*facehair
-            (1|ID), id="ID",data=beards)
-
+            formula = ~  facehair  + reach[ID] + 
+            (1|ID), id="ID",data=b.out)
 summary(model3)
+
+
 ```
