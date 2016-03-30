@@ -9,6 +9,7 @@ First the libraries that we are using
 library(BradleyTerry2)
 library(dplyr)
 library(knitr)
+library(ggplot2)
 source("functions_for_prepping_bt_analysis.R")
 ```
 Then load the data which comes from Mike.  Note the as.is thing which leaves all the character vectors as strings and does not make them into factors.
@@ -79,7 +80,7 @@ And report some summary stuff from the model
 ```{r}
 
 model2<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + facehair  + ht[ID] + reach[ID] + stance[ID] +
+            formula = ~ prev + as.factor(facehair)  + ht[ID] + reach[ID] + stance[ID] +
             (1|ID), id="ID",data=beards)
 
 summary(model2)
@@ -119,3 +120,35 @@ summary(model3)
 
 
 ```
+
+some stuff
+
+```{R}
+
+model.graphics<-BTm(player1=winner,player2=loser,
+            formula = ~ prev + facehair  + ht[ID] + reach[ID]  +
+            (1|ID), id="ID",data=beards)
+
+summary(model.graphics)
+out<-get_bt_abilities(model.graphics,predictors)
+predictors$ability<-out$abilities
+all<-rbind(winner,loser)
+beardy<-summarize(group_by(all,name),mean(facehair))
+predictors$beardy<-beardy$`mean(facehair)`[match(predictors$name,beardy$name)]
+
+predictors$beardy[predictors$beardy==1]<-"clean_shaven"
+predictors$beardy[predictors$beardy==2]<-"bearded"
+predictors$beardy[!predictors$beardy%in%c("clean_shaven","bearded")]<-"variable_or_other"
+table(predictors$beardy)
+
+pdf("plot_hist.pdf")
+ggplot(predictors,aes(x=ability, fill = beardy)) +
+  geom_histogram(binwidth = 0.05)
+dev.off()
+
+
+
+
+```
+
+

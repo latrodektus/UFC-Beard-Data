@@ -16,3 +16,17 @@ set_up_btm<-function(predictors,winner,loser){
   beards<-list(winner=winner2,loser=loser2,predictors=predictors)
   return(beards)
 }
+
+get_bt_abilities<-function(model,predictors=predictors){
+  nm <- grep("[ID]", names(coef(model)),fixed = TRUE, value = TRUE)
+  IDvar <- gsub("[ID]", "", nm, fixed = TRUE)
+  cf <- coef(model)[nm]
+  X <- as.matrix(predictors[, IDvar])
+  abilities <- X %*% cf
+  colnames(abilities) <- "abilities"
+  V <- vcov(model)[c(3,4), c(3,4)] # hack!
+  res <- cbind(abilities = abilities,se = sqrt(diag(X %*% V %*% t(X))))
+  return(data.frame(res))
+}
+
+
