@@ -18,6 +18,7 @@ Then load the data which comes from Mike.  Note the as.is thing which leaves all
 winner<-read.csv("UFC_winner.csv",as.is=T)
 loser<-read.csv("UFC_loser.csv",as.is=T)
 predictors<-read.csv("UFC_predictors.csv",as.is=T)
+#delete fighters with only one fight which are making BTm go crazy
 winner<-winner[c(-18,-157),]
 loser<-loser[c(-18,-157),]
 predictors<-predictors[c(-6,-162),]
@@ -25,57 +26,24 @@ predictors$stance[predictors$stance==""]<-"other"
 predictors$stance[predictors$stance=="Open Stance "]<-"other"
 predictors$stance[predictors$stance=="Switch "]<-"other"
 ```
-Turns out that th weird BradleyTerry thing needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files
+Turns out that th weird BradleyTerry thing needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files.  This is all now done in an external function.
 
 ```{r}
-names(predictors)[1]<-"ID"
-predictors<-arrange(predictors,ID)
-row.names(predictors)<-predictors$ID
-names(winner)[1]<-"ID"
-names(loser)[1]<-"ID"
+beards<-set_up_btm(predictors,winner,loser)
 ```
 
-Now stick the winner and loser files together.  This is a bit of a hack to get the levels of the factor to play nice
+Run the main model
 
-```{r}
-all<-rbind(winner,loser)
-```
-
-And add a column to keep the winners and losers labeled
-
-```{r}
-all$winning<-c(rep("yes",length(winner$ID)),rep("no",length(winner$ID)))
-```
-
-Now turn the unique IDs into a factor.
-```{r}
-all$ID<-as.factor(all$ID)
-```
-
-And split the data.frame into winners and losers.  Now with the levels correct so that all the matching works
-
-```{r}
-winner2<-filter(all,winning=="yes")
-loser2<-filter(all,winning=="no")
-```
-
-Assemble it into a list of data.frames.  This follows the chameleon example from their help thingie.  Probably not strictly necessary.
-
-```{r}
-beards<-list(winner=winner2,loser=loser2,predictors=predictors)
-```
-
-And at last do the model.  In this framework the [ID] thing is used for individual level covariates
 
 ```{r}
 model1<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + facehair + ht[ID] + reach[ID] +   
+            formula = ~ prev + as.factor(facehair) + ht[ID] + reach[ID] +   
             (1|ID), id="ID",data=beards)
 
 summary(model1)
 ```
 
-And report some summary stuff from the model
+See if stance matter
 
 ```{r}
 
@@ -93,15 +61,19 @@ Does this result depend on the type of victory?
 
 Greater than 3 is submission or decision or some other outcome.  Here we split the dataset into those two categories and show that facial hair still does not have an effect.
 
+Warning: code gets messy below here.  
+
 ```{r}
 #other wins including decisions and submissions
-w1<-filter(winner,method>=3)
-l1<-filter(loser,method>=3)
-p1<-subset(predictors,predictors$ID%in%w1$ID)
+w1<-subset(winner,winner$method>=3)
+w1$ID<-as.factor(as.character(w1$ID))
+l1<-subset(loser,loser$method>=3)
+l1$ID<-as.factor(as.character(l1$ID))
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
 b.out<-set_up_btm(p1,w1,l1)
 
 model.other.outcomes<-BTm(player1=winner,player2=loser,
-            formula = ~  facehair  + reach[ID] + 
+            formula = ~  as.factor(facehair)  + reach[ID] + 
             (1|ID), id="ID",data=b.out)
 summary(model.other.outcomes)
 
@@ -110,18 +82,16 @@ summary(model.other.outcomes)
 
 w1<-filter(winner,method<=2)
 l1<-filter(loser,method<=2)
-p1<-subset(predictors,predictors$ID%in%w1$ID)
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
 b.out<-set_up_btm(p1,w1,l1)
 
 model3<-BTm(player1=winner,player2=loser,
-            formula = ~  facehair  + reach[ID] + 
+            formula = ~  as.factor(facehair)  + reach[ID] + 
             (1|ID), id="ID",data=b.out)
 summary(model3)
-
-
 ```
 
-some stuff
+some code to make a histogram using a simplified version of the model and a work around because of the bug in the BTabilities function.
 
 ```{R}
 
@@ -132,23 +102,37 @@ model.graphics<-BTm(player1=winner,player2=loser,
 summary(model.graphics)
 out<-get_bt_abilities(model.graphics,predictors)
 predictors$ability<-out$abilities
-all<-rbind(winner,loser)
+  all<-rbind(winner,loser)
+  all$winning<-c(rep("yes",length(winner$ID)),rep("no",length(winner$ID)))
+  all$ID<-as.factor(all$ID)
+  winner2<-filter(all,winning=="yes")
+  loser2<-filter(all,winning=="no")
 beardy<-summarize(group_by(all,name),mean(facehair))
 predictors$beardy<-beardy$`mean(facehair)`[match(predictors$name,beardy$name)]
+all$winning[all$winning=="yes"]<-"win"
+all$winning[all$winning=="no"]<-"loss"
+all$finish[all$method>2]<-"other"
+all$finish[all$method<=2]<-"knockout"
+all$outcome<-paste(all$winning,all$finish,sep="_")
+prop.ko<-summarize(group_by(all,name),prop_knocked=sum(outcome=="loss_knockout")/length(finish))
 
 predictors$beardy[predictors$beardy==1]<-"clean_shaven"
 predictors$beardy[predictors$beardy==2]<-"bearded"
 predictors$beardy[!predictors$beardy%in%c("clean_shaven","bearded")]<-"variable_or_other"
 table(predictors$beardy)
 
-pdf("plot_hist.pdf")
+#pdf("plot_hist.pdf")
 ggplot(predictors,aes(x=ability, fill = beardy)) +
   geom_histogram(binwidth = 0.05)
-dev.off()
+#dev.off()
 
-
-
-
+predictors$prop.ko<-prop.ko$prop_knocked[match(predictors$name,prop.ko$name)]
+#pdf("whatAboutThisOne.pdf")
+ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")
+#dev.off()
 ```
+
+
+
 
 
