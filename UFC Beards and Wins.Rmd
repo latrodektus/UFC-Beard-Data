@@ -121,15 +121,16 @@ predictors$beardy[predictors$beardy==2]<-"bearded"
 predictors$beardy[!predictors$beardy%in%c("clean_shaven","bearded")]<-"variable_or_other"
 table(predictors$beardy)
 
-#pdf("plot_hist.pdf")
 ggplot(predictors,aes(x=ability, fill = beardy)) +
-  geom_histogram(binwidth = 0.05)
-#dev.off()
+  geom_histogram(binwidth = 0.05)+theme_bw() + labs(fill='Facial hair status') 
+ggsave("plot_hist.pdf")
 
 predictors$prop.ko<-prop.ko$prop_knocked[match(predictors$name,prop.ko$name)]
-#pdf("whatAboutThisOne.pdf")
-ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")
-#dev.off()
+
+
+ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")+theme_bw() + labs(fill="Facial hair status") 
+ggsave("whatAboutThisOne.pdf")
+
 ```
 
 
