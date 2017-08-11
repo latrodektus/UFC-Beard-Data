@@ -5,12 +5,12 @@ output: github_document
 ## A Bradley-Terry analysis of the effect (or lack thereof) of beards on UFC wins, losses, and knock-outs.
 
 First load the libraries that we are using. Install first from CRAN if necessary.  
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(BradleyTerry2)
 library(dplyr)
 library(knitr)
 library(ggplot2)
-source("functions_for_prepping_bt_analysis.R")
+source("R/functions_for_prepping_bt_analysis.R")
 ```
 Then load the data.  Note the as.is thing which leaves all the character vectors as strings and does not make them into factors.  This turns out to be important.  
 
@@ -68,16 +68,16 @@ Warning: code gets messy below here to again set up the data for the `BTm` funct
 
 ```{r}
 #other wins including decisions and submissions
-w1<-subset(winner,winner$method>=3)
+w1<-subset(winner, winner$method>=3)
 w1$ID<-as.factor(as.character(w1$ID))
-l1<-subset(loser,loser$method>=3)
+l1<-subset(loser, loser$method>=3)
 l1$ID<-as.factor(as.character(l1$ID))
 p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
-b.out<-set_up_btm(p1,w1,l1)
+b.out <- set_up_btm(p1, w1, l1)
 
-model.other.outcomes<-BTm(player1=winner,player2=loser,
+model.other.outcomes <- BTm(player1=winner, player2=loser,
                           formula = ~  as.factor(facehair)  + reach[ID] + 
-                            (1|ID), id="ID",data=b.out)
+                            (1|ID), id="ID", data=b.out)
 summary(model.other.outcomes)
 
 ```
