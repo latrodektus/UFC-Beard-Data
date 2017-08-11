@@ -1,8 +1,8 @@
 ---
-title: "UFC Beards"
-output: pdf_document
+title: "Beards in UFC"
+output: github_document
 ---
-# A Bradley-Terry analysis of UFC Beards and wins and losses.
+## A Bradley-Terry analysis of the effect (or lack thereof) of beards on UFC wins, losses, and knock-outs.
 
 First load the libraries that we are using. Install first from CRAN if necessary.  
 ```{r, message=FALSE}
