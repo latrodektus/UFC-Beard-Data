@@ -75,7 +75,7 @@ ID,name,ht,wt,reach,stance,class
 74,Corey Anderson,75,205,79,Open Stance ,Light Heavyweight
 75,Costas Philippou,71,185,73,Orthodox ,Middleweight
 76,Court McGee,71,170,76,Orthodox ,Welterweight
-77,Cub Swanson,68,145,70,Orthodox ,Catchweight (146.2 lbs.)
+77,Cub Swanson,68,145,70,Orthodox ,Catchweight (146.2Êlbs.)
 78,Cung Le,69,185,69,Southpaw ,Middleweight
 79,Cyrille Diabate,78,205,81,Southpaw ,Light Heavyweight
 80,Damian Maia,72,170,72,Southpaw ,Welterweight
@@ -104,7 +104,7 @@ ID,name,ht,wt,reach,stance,class
 103,Dong Hyun Kim,74,170,76,Southpaw ,Welterweight
 104,Drew McFedries,72,185,72,Southpaw ,Middleweight
 105,Duane Ludwig,70,170,70,Orthodox ,Lightweight
-106,Dustin Hazelett,73,170,76,Orthodox ,Catchweight(172 lb)
+106,Dustin Hazelett,73,170,76,Orthodox ,Catchweight(172Êlb)
 107,Dustin Poirier,69,155,72,Southpaw ,Featherweight
 108,Ed Herman,73,205,77,Orthodox ,Middleweight
 109,Eddie Alvarez,69,155,69,Orthodox ,Lightweight
@@ -160,7 +160,7 @@ ID,name,ht,wt,reach,stance,class
 159,Ivan Salaverry,72,185,75.5,Orthodox ,Middleweight
 160,Jacob Volkmann,69,155,71,Southpaw ,Welterweight
 161,Jake Ellenberger,69,170,71,Orthodox ,Welterweight
-162,Jake Rosholt,73,185,,Orthodox ,Middleweight
+162,Jake Rosholt,73,185,74,Orthodox ,Middleweight
 163,Jake Shields,72,170,72,Orthodox ,Welterweight
 164,James Head,73,170,73,Orthodox ,Welterweight
 165,James Krause,74,155,73,Orthodox ,Lightweight

@@ -2,34 +2,62 @@
 title: "Beards in UFC"
 output: github_document
 ---
-## A Bradley-Terry analysis of the effect (or lack thereof) of beards on UFC wins, losses, and knock-outs.
+# A Bradley-Terry analysis of the effect (or lack thereof) of beards on UFC wins, losses, and knock-outs.
+
+
+## Preliminary setting up of the software and the data
 
 First load the libraries that we are using. Install first from CRAN if necessary.  
 ```{r, message=FALSE, warning=FALSE}
+library(qvcalc)
 library(BradleyTerry2)
 library(dplyr)
+library(magrittr)
 library(knitr)
 library(ggplot2)
 source("R/functions_for_prepping_bt_analysis.R")
 ```
-Then load the data.  Note the as.is thing which leaves all the character vectors as strings and does not make them into factors.  This turns out to be important.  
+Then load the data.  
 
 ```{r}
-winner <- read.csv("data/UFC_winner.csv", as.is=T)
-loser <- read.csv("data/UFC_loser.csv", as.is=T)
-predictors <- read.csv("data/UFC_predictors.csv", as.is=T)
+winner <- read.csv("data/UFC_winner.csv", stringsAsFactors = FALSE)
+loser <- read.csv("data/UFC_loser.csv", stringsAsFactors = FALSE)
+predictors <- read.csv("data/UFC_predictors.csv", stringsAsFactors = FALSE)
 ```
 
-Delete fighters with only one fight which are making BT model fitting go crazy.  Also recode some of the very rare stance types to "other" also helps the model converge.
+Recode some of the very rare stance types to "other" also helps the model converge.
 
 ```{r}
-winner <- winner[c(-18,-157),]
-loser <- loser[c(-18,-157),]
-predictors <- predictors[c(-6,-162),]
+#winner <- winner[c(-18,-157),]
+#loser <- loser[c(-18,-157),]
+#predictors <- predictors[c(-6,-162),]
 predictors$stance[predictors$stance==""] <- "other"
 predictors$stance[predictors$stance=="Open Stance "] <- "other"
 predictors$stance[predictors$stance=="Switch "] <- "other"
 ```
+
+A table of counts of wins and losses for the particular facial hair combinations in the dataset
+
+```{r}
+summary_df<-data_frame(facehair_winner=winner$facehair,facehair_loser=loser$facehair)
+summary_df[summary_df=="1"]<-"clean-shaven"
+summary_df[summary_df=="2"]<-"other facial hair"
+summary_df[summary_df=="3"]<-"full beard"
+kable(as.data.frame(table(summary_df)))
+#table(summary_df)
+```
+
+Also the distribution of fights by each fighter is of interst.  While 
+
+```{r}
+out<-data_frame(numberoffights=as.integer(table(cbind(winner$name,loser$name))))
+ggplot(out,aes(x=numberoffights))+geom_histogram(binwidth=1)+theme_bw()+labs(x="Number of fights")
+print(paste("median number of fights was",median(out$numberoffights)))
+print(paste("mean number of fights was",mean(out$numberoffights)))
+```
+
+
+##Bradley Terry Analysis
 
 Turns out that the BradleyTerry model formation needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files.  This is all now done in an external function.  If curious, investigate the R-script that is sourced at the top of this knitr document.  
 
@@ -37,28 +65,45 @@ Turns out that the BradleyTerry model formation needs a very specific format to 
 beards <- set_up_btm(predictors, winner, loser)
 ```
 
-Run the main model
+### Model 1: treating "other facial hair" as a seperate class
+
+Run the model.
 
 ```{r}
+
+
+
 model1<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + as.factor(facehair) + ht[ID] + reach[ID] +   
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
               (1|ID), id="ID",data=beards)
 
 summary(model1)
 ```
 
-See if stance matters
+### Model 2: treating "other facial hair" as a clean shaven
 
 ```{r}
-
+winner$facehair[winner$facehair==2]<-1
+loser$facehair[loser$facehair==2]<-1
+beards2 <- set_up_btm(predictors, winner, loser)
 model2<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + as.factor(facehair)  + ht[ID] + reach[ID] + stance[ID] + (1|ID), id="ID",data=beards)
-
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
+              (1|ID), id="ID",data=beards2)
 summary(model2)
 ```
 
+### Power analysis of this result: how many more fights would bearded fighters would've needed to win to get a significant result
 
-Does this result depend on the type of victory? 
+
+```{r}
+
+```
+
+
+
+
+
+## Does this result depend on the type of victory? 
 
 2 or less is a TKO or KO
 
@@ -91,8 +136,7 @@ p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)
 b.out<-set_up_btm(p1,w1,l1)
 
 model3<-BTm(player1=winner,player2=loser,
-            formula = ~  as.factor(facehair)  + reach[ID] + 
-              (1|ID), id="ID",data=b.out)
+            formula = ~  as.factor(prev) + as.factor(facehair)  + ht[ID] + reach[ID] + stance[ID] + (1|ID), id="ID",data=b.out)
 summary(model3)
 ```
 
