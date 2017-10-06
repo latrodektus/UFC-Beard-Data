@@ -175,6 +175,8 @@ summary(model2)
 
 ### Power analysis of this result: how many more fights would bearded fighters would've needed to win to get a significant result
 
+Not running this dynamically, because the current version of the figure takes about an hour of computation time on a normal computer.
+
 ![power analysis](figures/power_analysis.png) The observed proportion of wins by bearded competitors was 49.3 % . We would have detected a significant effect at 58 % (on average) suggesting that that our method and sample size had sufficient power to detect a reasonable sized competitive advantage--if it had existed.
 
 The fact that at this sample size the proportion of victories by bearded competitors is so close to 50% suggests that any effect of beards on competitive outcomes, if it exists at all, is vanishing small.
@@ -182,53 +184,9 @@ The fact that at this sample size the proportion of victories by bearded competi
 Does this result depend on the type of victory?
 -----------------------------------------------
 
-2 or less is a TKO or KO
+2 or less is a TKO or KO. Greater than 3 is submission or decision or some other outcome. Here we split the dataset into those two categories and show that facial hair still does not have an effect.
 
-Greater than 3 is submission or decision or some other outcome. Here we split the dataset into those two categories and show that facial hair still does not have an effect.
-
-Warning: code gets messy below here to again set up the data for the `BTm` function.
-
-``` r
-#other wins including decisions and submissions
-w1<-subset(winner, winner$method>=3)
-w1$ID<-as.factor(as.character(w1$ID))
-l1<-subset(loser, loser$method>=3)
-l1$ID<-as.factor(as.character(l1$ID))
-p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
-b.out <- set_up_btm(p1, w1, l1)
-
-model.other.outcomes <- BTm(player1=winner, player2=loser,
-                          formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
-              (1|ID), id="ID", data=b.out)
-summary(model.other.outcomes)
-```
-
-    ## 
-    ## Call:
-    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
-    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
-    ## 
-    ## Fixed Effects:
-    ##                     Estimate Std. Error z value Pr(>|z|)
-    ## prev                 0.18385    0.18032   1.020    0.308
-    ## facehair2           -0.06437    0.17761  -0.362    0.717
-    ## facehair3           -0.35131    0.23907  -1.470    0.142
-    ## ht[ID]               0.04181    0.04701   0.889    0.374
-    ## reach[ID]           -0.05266    0.03878  -1.358    0.174
-    ## stance[ID]other     -0.34103    0.36094  -0.945    0.345
-    ## stance[ID]Southpaw  -0.07191    0.19913  -0.361    0.718
-    ## 
-    ## (Dispersion parameter for binomial family taken to be 1)
-    ## 
-    ## Random Effects:
-    ##           Estimate Std. Error z value Pr(>|z|)   
-    ## Std. Dev.   0.4490     0.1378   3.257  0.00112 **
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Number of iterations: 10
-
-### And now the same model but only considering the fights that resulted in TKO's or KO's
+### Model 3: only the fights that resulted in TKO's or KO's:
 
 ``` r
 w1<-filter(winner,method<=2)
@@ -269,7 +227,7 @@ summary(model3)
     ## 
     ## Number of iterations: 11
 
-TKO's and KO's but now lumping the "other facial hair" in with clean shaven.
+### Model 4: TKO's and KO's but now lumping the "other facial hair" in with clean shaven:
 
 ``` r
 w1$facehair[w1$facehair==2]<-1
@@ -309,6 +267,9 @@ summary(model4)
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## Number of iterations: 10
+
+Extracting BT Abilities for graphics
+------------------------------------
 
 Examine a histogram using a simplified version of the model and a work around because of the bug in the BTabilities function. This led to [a StackOverflow question](https://stackoverflow.com/questions/30253178/calculate-bradleyterry-ability-rankings) and eventually a resolution via the original writers of the package.
 
@@ -377,7 +338,7 @@ ggplot(predictors,aes(x=ability, fill = beardy)) +
   geom_histogram(binwidth = 0.05)+theme_bw() + labs(fill='Facial hair status') 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-1.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png)
 
 ``` r
 ggsave("figures/plot_hist.pdf")
@@ -392,7 +353,7 @@ predictors$prop.ko<-prop.ko$prop_knocked[match(predictors$name,prop.ko$name)]
 ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")+theme_bw() + labs(fill="Facial hair status") 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-2.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-2.png)
 
 ``` r
 ggsave("figures/knockout_hist.pdf")
