@@ -96,6 +96,7 @@ summary(model2)
 
 ### Power analysis of this result: how many more fights would bearded fighters would've needed to win to get a significant result
 
+Not running this dynamically, because the current version of the figure takes about an hour of computation time on a normal computer.  
 
 ![power analysis](figures/power_analysis.png)
 The observed proportion of wins by bearded competitors was 49.3 % . We would have detected a significant effect at 58 % (on average) suggesting that that our method and sample size had sufficient power to detect a reasonable sized competitive advantage--if it had existed.
@@ -105,29 +106,9 @@ The fact that at this sample size the proportion of victories by bearded competi
 
 ## Does this result depend on the type of victory? 
 
-2 or less is a TKO or KO
+2 or less is a TKO or KO.  Greater than 3 is submission or decision or some other outcome.  Here we split the dataset into those two categories and show that facial hair still does not have an effect.
 
-Greater than 3 is submission or decision or some other outcome.  Here we split the dataset into those two categories and show that facial hair still does not have an effect.
-
-Warning: code gets messy below here to again set up the data for the `BTm` function.    
-
-```{r}
-#other wins including decisions and submissions
-w1<-subset(winner, winner$method>=3)
-w1$ID<-as.factor(as.character(w1$ID))
-l1<-subset(loser, loser$method>=3)
-l1$ID<-as.factor(as.character(l1$ID))
-p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
-b.out <- set_up_btm(p1, w1, l1)
-
-model.other.outcomes <- BTm(player1=winner, player2=loser,
-                          formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
-              (1|ID), id="ID", data=b.out)
-summary(model.other.outcomes)
-
-```
-
-### And now the same model but only considering the fights that resulted in TKO's or KO's
+### Model 3: only the fights that resulted in TKO's or KO's:
 
 ```{R}
 w1<-filter(winner,method<=2)
@@ -141,7 +122,7 @@ model3<-BTm(player1=winner,player2=loser,
 summary(model3)
 ```
 
-TKO's and KO's but now lumping the "other facial hair" in with clean shaven.
+### Model 4: TKO's and KO's but now lumping the "other facial hair" in with clean shaven:
 
 ```{R}
 w1$facehair[w1$facehair==2]<-1
@@ -156,6 +137,8 @@ model4<-BTm(player1=winner,player2=loser,
 summary(model4)
 ```
 
+
+## Extracting BT Abilities for graphics
 
 
 Examine a histogram using a simplified version of the model and a work around because of the bug in the BTabilities function.  This led to [a StackOverflow question](https://stackoverflow.com/questions/30253178/calculate-bradleyterry-ability-rankings) and eventually a resolution via the original writers of the package.  
