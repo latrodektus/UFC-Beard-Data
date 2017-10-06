@@ -2,36 +2,91 @@ Beards in UFC
 ================
 
 A Bradley-Terry analysis of the effect (or lack thereof) of beards on UFC wins, losses, and knock-outs.
--------------------------------------------------------------------------------------------------------
+=======================================================================================================
+
+Preliminary setting up of the software and the data
+---------------------------------------------------
 
 First load the libraries that we are using. Install first from CRAN if necessary.
 
 ``` r
+library(qvcalc)
 library(BradleyTerry2)
 library(dplyr)
+library(magrittr)
 library(knitr)
 library(ggplot2)
 source("R/functions_for_prepping_bt_analysis.R")
 ```
 
-Then load the data. Note the as.is thing which leaves all the character vectors as strings and does not make them into factors. This turns out to be important.
+Then load the data.
 
 ``` r
-winner <- read.csv("data/UFC_winner.csv", as.is=T)
-loser <- read.csv("data/UFC_loser.csv", as.is=T)
-predictors <- read.csv("data/UFC_predictors.csv", as.is=T)
+winner <- read.csv("data/UFC_winner.csv", stringsAsFactors = FALSE)
+loser <- read.csv("data/UFC_loser.csv", stringsAsFactors = FALSE)
+predictors <- read.csv("data/UFC_predictors.csv", stringsAsFactors = FALSE)
 ```
 
-Delete fighters with only one fight which are making BT model fitting go crazy. Also recode some of the very rare stance types to "other" also helps the model converge.
+Recode some of the very rare stance types to "other" also helps the model converge.
 
 ``` r
-winner <- winner[c(-18,-157),]
-loser <- loser[c(-18,-157),]
-predictors <- predictors[c(-6,-162),]
+#winner <- winner[c(-18,-157),]
+#loser <- loser[c(-18,-157),]
+#predictors <- predictors[c(-6,-162),]
 predictors$stance[predictors$stance==""] <- "other"
 predictors$stance[predictors$stance=="Open Stance "] <- "other"
 predictors$stance[predictors$stance=="Switch "] <- "other"
 ```
+
+A table of counts of wins and losses for the particular facial hair combinations in the dataset
+
+``` r
+summary_df<-data_frame(facehair_winner=winner$facehair,facehair_loser=loser$facehair)
+summary_df[summary_df=="1"]<-"clean-shaven"
+summary_df[summary_df=="2"]<-"other facial hair"
+summary_df[summary_df=="3"]<-"full beard"
+kable(as.data.frame(table(summary_df)))
+```
+
+| facehair\_winner  | facehair\_loser   |  Freq|
+|:------------------|:------------------|-----:|
+| clean-shaven      | clean-shaven      |   117|
+| full beard        | clean-shaven      |    41|
+| other facial hair | clean-shaven      |    87|
+| clean-shaven      | full beard        |    36|
+| full beard        | full beard        |    23|
+| other facial hair | full beard        |    41|
+| clean-shaven      | other facial hair |    93|
+| full beard        | other facial hair |    34|
+| other facial hair | other facial hair |   128|
+
+``` r
+#table(summary_df)
+```
+
+Also the distribution of fights by each fighter is of interst. While
+
+``` r
+out<-data_frame(numberoffights=as.integer(table(cbind(winner$name,loser$name))))
+ggplot(out,aes(x=numberoffights))+geom_histogram(binwidth=1)+theme_bw()+labs(x="Number of fights")
+```
+
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
+
+``` r
+print(paste("median number of fights was",median(out$numberoffights)))
+```
+
+    ## [1] "median number of fights was 2"
+
+``` r
+print(paste("mean number of fights was",mean(out$numberoffights)))
+```
+
+    ## [1] "mean number of fights was 3.0379746835443"
+
+Bradley Terry Analysis
+----------------------
 
 Turns out that the BradleyTerry model formation needs a very specific format to match things up so we label all the unique id columns "ID" and sort the predictor unique ID column to match the order of the levels of the trial-level files. This is all now done in an external function. If curious, investigate the R-script that is sourced at the top of this knitr document.
 
@@ -39,11 +94,13 @@ Turns out that the BradleyTerry model formation needs a very specific format to 
 beards <- set_up_btm(predictors, winner, loser)
 ```
 
-Run the main model
+### Model 1: treating "other facial hair" as a seperate class
+
+Run the model.
 
 ``` r
 model1<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + as.factor(facehair) + ht[ID] + reach[ID] +   
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
               (1|ID), id="ID",data=beards)
 
 summary(model1)
@@ -51,17 +108,18 @@ summary(model1)
 
     ## 
     ## Call:
-    ## 
-    ## BTm(player1 = winner, player2 = loser, formula = ~prev + as.factor(facehair) + 
-    ##     ht[ID] + reach[ID] + (1 | ID), id = "ID", data = beards)
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = beards)
     ## 
     ## Fixed Effects:
-    ##                       Estimate Std. Error z value Pr(>|z|)  
-    ## prev                  0.002166   0.119947   0.018   0.9856  
-    ## as.factor(facehair)2 -0.027848   0.152367  -0.183   0.8550  
-    ## as.factor(facehair)3 -0.044360   0.202270  -0.219   0.8264  
-    ## ht[ID]               -0.044150   0.052307  -0.844   0.3986  
-    ## reach[ID]             0.092260   0.036438   2.532   0.0113 *
+    ##                     Estimate Std. Error z value Pr(>|z|)   
+    ## prev                 0.11473    0.14755   0.778  0.43684   
+    ## facehair2           -0.04126    0.15227  -0.271  0.78642   
+    ## facehair3           -0.06093    0.20418  -0.298  0.76540   
+    ## ht[ID]              -0.04807    0.05217  -0.921  0.35686   
+    ## reach[ID]            0.09429    0.03637   2.592  0.00953 **
+    ## stance[ID]other     -1.08072    0.42659  -2.533  0.01130 * 
+    ## stance[ID]Southpaw   0.23955    0.16547   1.448  0.14770   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -69,38 +127,39 @@ summary(model1)
     ## 
     ## Random Effects:
     ##           Estimate Std. Error z value Pr(>|z|)    
-    ## Std. Dev.   0.5087     0.1000   5.087 3.63e-07 ***
+    ## Std. Dev.   0.4879     0.1031   4.732 2.22e-06 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## 2 observations deleted due to missingness
-    ## 
     ## Number of iterations: 15
 
-See if stance matters
+### Model 2: treating "other facial hair" as a clean shaven
 
 ``` r
+winner2<-winner
+loser2<-loser
+winner2$facehair[winner2$facehair==2]<-1
+loser2$facehair[loser2$facehair==2]<-1
+beards2 <- set_up_btm(predictors, winner2, loser2)
 model2<-BTm(player1=winner,player2=loser,
-            formula = ~ prev + as.factor(facehair)  + ht[ID] + reach[ID] + stance[ID] + (1|ID), id="ID",data=beards)
-
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
+              (1|ID), id="ID",data=beards2)
 summary(model2)
 ```
 
     ## 
     ## Call:
-    ## 
-    ## BTm(player1 = winner, player2 = loser, formula = ~prev + as.factor(facehair) + 
-    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = beards)
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = beards2)
     ## 
     ## Fixed Effects:
-    ##                      Estimate Std. Error z value Pr(>|z|)   
-    ## prev                 -0.01494    0.12117  -0.123  0.90184   
-    ## as.factor(facehair)2 -0.03402    0.15488  -0.220  0.82612   
-    ## as.factor(facehair)3 -0.05933    0.20689  -0.287  0.77430   
-    ## ht[ID]               -0.05748    0.05319  -1.081  0.27988   
-    ## reach[ID]             0.09877    0.03704   2.666  0.00767 **
-    ## stance[ID]other      -1.08387    0.43055  -2.517  0.01182 * 
-    ## stance[ID]Southpaw    0.27117    0.16968   1.598  0.11003   
+    ##                     Estimate Std. Error z value Pr(>|z|)   
+    ## prev                 0.11654    0.14737   0.791  0.42907   
+    ## facehair3           -0.03888    0.18645  -0.209  0.83481   
+    ## ht[ID]              -0.04723    0.05195  -0.909  0.36326   
+    ## reach[ID]            0.09374    0.03622   2.588  0.00966 **
+    ## stance[ID]other     -1.07241    0.42500  -2.523  0.01163 * 
+    ## stance[ID]Southpaw   0.24283    0.16445   1.477  0.13978   
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -108,15 +167,20 @@ summary(model2)
     ## 
     ## Random Effects:
     ##           Estimate Std. Error z value Pr(>|z|)    
-    ## Std. Dev.   0.5199     0.1010   5.145 2.67e-07 ***
+    ## Std. Dev.   0.4823     0.1033   4.669 3.03e-06 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## 2 observations deleted due to missingness
-    ## 
     ## Number of iterations: 15
 
+### Power analysis of this result: how many more fights would bearded fighters would've needed to win to get a significant result
+
+![power analysis](figures/power_analysis.png) The observed proportion of wins by bearded competitors was 49.3 % . We would have detected a significant effect at 58 % (on average) suggesting that that our method and sample size had sufficient power to detect a reasonable sized competitive advantage--if it had existed.
+
+The fact that at this sample size the proportion of victories by bearded competitors is so close to 50% suggests that any effect of beards on competitive outcomes, if it exists at all, is vanishing small.
+
 Does this result depend on the type of victory?
+-----------------------------------------------
 
 2 or less is a TKO or KO
 
@@ -134,35 +198,37 @@ p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)
 b.out <- set_up_btm(p1, w1, l1)
 
 model.other.outcomes <- BTm(player1=winner, player2=loser,
-                          formula = ~  as.factor(facehair)  + reach[ID] + 
-                            (1|ID), id="ID", data=b.out)
+                          formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
+              (1|ID), id="ID", data=b.out)
 summary(model.other.outcomes)
 ```
 
     ## 
     ## Call:
-    ## 
-    ## BTm(player1 = winner, player2 = loser, formula = ~as.factor(facehair) + 
-    ##     reach[ID] + (1 | ID), id = "ID", data = b.out)
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
     ## 
     ## Fixed Effects:
-    ##                      Estimate Std. Error z value Pr(>|z|)
-    ## as.factor(facehair)2 -0.04916    0.17886  -0.275    0.783
-    ## as.factor(facehair)3 -0.31051    0.23927  -1.298    0.194
-    ## reach[ID]            -0.01297    0.01953  -0.664    0.507
+    ##                     Estimate Std. Error z value Pr(>|z|)
+    ## prev                 0.18385    0.18032   1.020    0.308
+    ## facehair2           -0.06437    0.17761  -0.362    0.717
+    ## facehair3           -0.35131    0.23907  -1.470    0.142
+    ## ht[ID]               0.04181    0.04701   0.889    0.374
+    ## reach[ID]           -0.05266    0.03878  -1.358    0.174
+    ## stance[ID]other     -0.34103    0.36094  -0.945    0.345
+    ## stance[ID]Southpaw  -0.07191    0.19913  -0.361    0.718
     ## 
     ## (Dispersion parameter for binomial family taken to be 1)
     ## 
     ## Random Effects:
-    ##           Estimate Std. Error z value Pr(>|z|)    
-    ## Std. Dev.   0.4831     0.1301   3.713 0.000205 ***
+    ##           Estimate Std. Error z value Pr(>|z|)   
+    ## Std. Dev.   0.4490     0.1378   3.257  0.00112 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Number of iterations: 8
+    ## Number of iterations: 10
 
-Investigating TKO's and KO's
-----------------------------
+### And now the same model but only considering the fights that resulted in TKO's or KO's
 
 ``` r
 w1<-filter(winner,method<=2)
@@ -171,28 +237,74 @@ p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)
 b.out<-set_up_btm(p1,w1,l1)
 
 model3<-BTm(player1=winner,player2=loser,
-            formula = ~  as.factor(facehair)  + reach[ID] + 
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
               (1|ID), id="ID",data=b.out)
 summary(model3)
 ```
 
     ## 
     ## Call:
-    ## 
-    ## BTm(player1 = winner, player2 = loser, formula = ~as.factor(facehair) + 
-    ##     reach[ID] + (1 | ID), id = "ID", data = b.out)
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
     ## 
     ## Fixed Effects:
-    ##                      Estimate Std. Error z value Pr(>|z|)
-    ## as.factor(facehair)2  0.08711    0.26796   0.325    0.745
-    ## as.factor(facehair)3  0.57272    0.35041   1.634    0.102
-    ## reach[ID]             0.03911    0.04519   0.865    0.387
+    ##                     Estimate Std. Error z value Pr(>|z|)  
+    ## prev                 0.16497    0.25873   0.638   0.5237  
+    ## facehair2            0.21512    0.27353   0.786   0.4316  
+    ## facehair3            0.60300    0.36363   1.658   0.0973 .
+    ## ht[ID]              -0.11383    0.09475  -1.201   0.2296  
+    ## reach[ID]            0.10135    0.06315   1.605   0.1085  
+    ## stance[ID]other     -1.46829    0.83877  -1.751   0.0800 .
+    ## stance[ID]Southpaw   0.47954    0.30645   1.565   0.1176  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
     ## (Dispersion parameter for binomial family taken to be 1)
     ## 
     ## Random Effects:
-    ##           Estimate Std. Error z value Pr(>|z|)   
-    ## Std. Dev.   0.5066     0.1951   2.597   0.0094 **
+    ##           Estimate Std. Error z value Pr(>|z|)  
+    ## Std. Dev.   0.5004     0.2065   2.423   0.0154 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Number of iterations: 11
+
+TKO's and KO's but now lumping the "other facial hair" in with clean shaven.
+
+``` r
+w1$facehair[w1$facehair==2]<-1
+l1$facehair[l1$facehair==2]<-1
+
+b.out<-set_up_btm(p1,w1,l1)
+
+
+model4<-BTm(player1=winner,player2=loser,
+            formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
+              (1|ID), id="ID",data=b.out)
+summary(model4)
+```
+
+    ## 
+    ## Call:
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
+    ## 
+    ## Fixed Effects:
+    ##                     Estimate Std. Error z value Pr(>|z|)  
+    ## prev                 0.17335    0.25704   0.674   0.5000  
+    ## facehair3            0.51136    0.34015   1.503   0.1328  
+    ## ht[ID]              -0.11112    0.09358  -1.187   0.2350  
+    ## reach[ID]            0.09859    0.06236   1.581   0.1139  
+    ## stance[ID]other     -1.44372    0.83143  -1.736   0.0825 .
+    ## stance[ID]Southpaw   0.44332    0.29893   1.483   0.1381  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## (Dispersion parameter for binomial family taken to be 1)
+    ## 
+    ## Random Effects:
+    ##           Estimate Std. Error z value Pr(>|z|)  
+    ## Std. Dev.   0.4688     0.2131     2.2   0.0278 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -214,11 +326,12 @@ summary(model.graphics)
     ##     ht[ID] + reach[ID] + (1 | ID), id = "ID", data = beards)
     ## 
     ## Fixed Effects:
-    ##            Estimate Std. Error z value Pr(>|z|)  
-    ## prev       0.003328   0.119863   0.028   0.9779  
-    ## facehair  -0.023263   0.097027  -0.240   0.8105  
-    ## ht[ID]    -0.044107   0.052209  -0.845   0.3982  
-    ## reach[ID]  0.092161   0.036363   2.534   0.0113 *
+    ##           Estimate Std. Error z value Pr(>|z|)  
+    ## prev       0.12552    0.14604   0.860   0.3900  
+    ## facehair2 -0.03241    0.14999  -0.216   0.8289  
+    ## facehair3 -0.04466    0.19984  -0.223   0.8232  
+    ## ht[ID]    -0.03568    0.05136  -0.695   0.4872  
+    ## reach[ID]  0.08841    0.03581   2.469   0.0136 *
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -226,11 +339,9 @@ summary(model.graphics)
     ## 
     ## Random Effects:
     ##           Estimate Std. Error z value Pr(>|z|)    
-    ## Std. Dev.   0.5048     0.1001   5.045 4.54e-07 ***
+    ## Std. Dev.   0.4771     0.1022   4.667 3.06e-06 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## 2 observations deleted due to missingness
     ## 
     ## Number of iterations: 15
 
@@ -259,14 +370,14 @@ table(predictors$beardy)
 
     ## 
     ##           bearded      clean shaven variable or other 
-    ##               115               109               169
+    ##               115               111               169
 
 ``` r
 ggplot(predictors,aes(x=ability, fill = beardy)) +
   geom_histogram(binwidth = 0.05)+theme_bw() + labs(fill='Facial hair status') 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-1.png)
 
 ``` r
 ggsave("figures/plot_hist.pdf")
@@ -281,7 +392,7 @@ predictors$prop.ko<-prop.ko$prop_knocked[match(predictors$name,prop.ko$name)]
 ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")+theme_bw() + labs(fill="Facial hair status") 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-2.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-2.png)
 
 ``` r
 ggsave("figures/knockout_hist.pdf")
