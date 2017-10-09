@@ -47,6 +47,21 @@ kable(as.data.frame(table(summary_df)))
 #table(summary_df)
 ```
 
+And the frequency table of outcomes:
+
+```{r}
+summary_df<-data_frame(method=winner$method)
+summary_df$method[summary_df$method=="1"]<-"KO"
+summary_df$method[summary_df$method=="2"]<-"TKO"
+summary_df$method[summary_df$method=="3"]<-"Stoppage (doctor/corner)"
+summary_df$method[summary_df$method=="4"]<-"Submission"
+summary_df$method[summary_df$method=="5"]<-"Unanimous decision"
+summary_df$method[summary_df$method=="6"]<-"Split decision"
+summary_df$method[summary_df$method=="7"]<-"No contest/draw/disqualification/injury"
+kable(as.data.frame(table(summary_df$method)))
+```
+
+
 Also the distribution of fights by each fighter is of interst.  While 
 
 ```{r}
@@ -125,8 +140,8 @@ summary(model3)
 ### Model 4: TKO's and KO's but now lumping the "other facial hair" in with clean shaven:
 
 ```{R}
-w1$facehair[w1$facehair==2]<-1
-l1$facehair[l1$facehair==2]<-1
+w1$facehair[w1$facehair==2]<-1 #recode "other" as clean shaven
+l1$facehair[l1$facehair==2]<-1 #recode "other" as clean shaven
 
 b.out<-set_up_btm(p1,w1,l1)
 
@@ -135,6 +150,42 @@ model4<-BTm(player1=winner,player2=loser,
             formula = ~ prev + facehair + ht[ID] + reach[ID] + stance[ID] +
               (1|ID), id="ID",data=b.out)
 summary(model4)
+```
+
+### Model 5: for decisions with three levels of facial hair 
+
+Greater than 3 is submission or decision or some other outcome. Here we just analyze non-TKO/KO outcomes:
+
+```{r}
+#other wins including decisions and submissions
+w1<-subset(winner,winner$method>=3)
+w1$ID<-as.factor(as.character(w1$ID))
+l1<-subset(loser,loser$method>=3)
+l1$ID<-as.factor(as.character(l1$ID))
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
+b.out<-set_up_btm(p1,w1,l1)
+
+model.other.outcomes<-BTm(player1=winner,player2=loser,
+                          formula = ~ prev + facehair + ht[ID] + reach[ID]                           + stance[ID] + (1|ID), id="ID",data=b.out)
+summary(model.other.outcomes)
+```
+
+### Model 6: for decisions with *two* levels of facial hair 
+
+```{r}
+#other wins including decisions and submissions
+w1<-subset(winner,winner$method>=3)
+w1$ID<-as.factor(as.character(w1$ID))
+l1<-subset(loser,loser$method>=3)
+l1$ID<-as.factor(as.character(l1$ID))
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
+w1$facehair[w1$facehair==2]<-1 #recode "other" as clean shaven
+l1$facehair[l1$facehair==2]<-1 #recode "other" as clean shaven
+b.out<-set_up_btm(p1,w1,l1)
+
+model.other.outcomes<-BTm(player1=winner,player2=loser,
+                          formula = ~ prev + facehair + ht[ID] + reach[ID]                           + stance[ID] + (1|ID), id="ID",data=b.out)
+summary(model.other.outcomes)
 ```
 
 

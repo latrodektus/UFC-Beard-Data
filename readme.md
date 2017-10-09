@@ -64,6 +64,30 @@ kable(as.data.frame(table(summary_df)))
 #table(summary_df)
 ```
 
+And the frequency table of outcomes:
+
+``` r
+summary_df<-data_frame(method=winner$method)
+summary_df$method[summary_df$method=="1"]<-"KO"
+summary_df$method[summary_df$method=="2"]<-"TKO"
+summary_df$method[summary_df$method=="3"]<-"Stoppage (doctor/corner)"
+summary_df$method[summary_df$method=="4"]<-"Submission"
+summary_df$method[summary_df$method=="5"]<-"Unanimous decision"
+summary_df$method[summary_df$method=="6"]<-"Split decision"
+summary_df$method[summary_df$method=="7"]<-"No contest/draw/disqualification/injury"
+kable(as.data.frame(table(summary_df$method)))
+```
+
+| Var1                                    |  Freq|
+|:----------------------------------------|-----:|
+| KO                                      |    83|
+| No contest/draw/disqualification/injury |    17|
+| Split decision                          |    52|
+| Stoppage (doctor/corner)                |     7|
+| Submission                              |    98|
+| TKO                                     |   118|
+| Unanimous decision                      |   225|
+
 Also the distribution of fights by each fighter is of interst. While
 
 ``` r
@@ -71,7 +95,7 @@ out<-data_frame(numberoffights=as.integer(table(cbind(winner$name,loser$name))))
 ggplot(out,aes(x=numberoffights))+geom_histogram(binwidth=1)+theme_bw()+labs(x="Number of fights")
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
 
 ``` r
 print(paste("median number of fights was",median(out$numberoffights)))
@@ -230,8 +254,8 @@ summary(model3)
 ### Model 4: TKO's and KO's but now lumping the "other facial hair" in with clean shaven:
 
 ``` r
-w1$facehair[w1$facehair==2]<-1
-l1$facehair[l1$facehair==2]<-1
+w1$facehair[w1$facehair==2]<-1 #recode "other" as clean shaven
+l1$facehair[l1$facehair==2]<-1 #recode "other" as clean shaven
 
 b.out<-set_up_btm(p1,w1,l1)
 
@@ -263,6 +287,91 @@ summary(model4)
     ## Random Effects:
     ##           Estimate Std. Error z value Pr(>|z|)  
     ## Std. Dev.   0.4688     0.2131     2.2   0.0278 *
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Number of iterations: 10
+
+### Model 5: for decisions with three levels of facial hair
+
+Greater than 3 is submission or decision or some other outcome. Here we just analyze non-TKO/KO outcomes:
+
+``` r
+#other wins including decisions and submissions
+w1<-subset(winner,winner$method>=3)
+w1$ID<-as.factor(as.character(w1$ID))
+l1<-subset(loser,loser$method>=3)
+l1$ID<-as.factor(as.character(l1$ID))
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
+b.out<-set_up_btm(p1,w1,l1)
+
+model.other.outcomes<-BTm(player1=winner,player2=loser,
+                          formula = ~ prev + facehair + ht[ID] + reach[ID]                           + stance[ID] + (1|ID), id="ID",data=b.out)
+summary(model.other.outcomes)
+```
+
+    ## 
+    ## Call:
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
+    ## 
+    ## Fixed Effects:
+    ##                     Estimate Std. Error z value Pr(>|z|)
+    ## prev                 0.18385    0.18032   1.020    0.308
+    ## facehair2           -0.06437    0.17761  -0.362    0.717
+    ## facehair3           -0.35131    0.23907  -1.470    0.142
+    ## ht[ID]               0.04181    0.04701   0.889    0.374
+    ## reach[ID]           -0.05266    0.03878  -1.358    0.174
+    ## stance[ID]other     -0.34103    0.36094  -0.945    0.345
+    ## stance[ID]Southpaw  -0.07191    0.19913  -0.361    0.718
+    ## 
+    ## (Dispersion parameter for binomial family taken to be 1)
+    ## 
+    ## Random Effects:
+    ##           Estimate Std. Error z value Pr(>|z|)   
+    ## Std. Dev.   0.4490     0.1378   3.257  0.00112 **
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Number of iterations: 10
+
+### Model 6: for decisions with *two* levels of facial hair
+
+``` r
+#other wins including decisions and submissions
+w1<-subset(winner,winner$method>=3)
+w1$ID<-as.factor(as.character(w1$ID))
+l1<-subset(loser,loser$method>=3)
+l1$ID<-as.factor(as.character(l1$ID))
+p1<-subset(predictors,predictors$ID%in%c(as.character(w1$ID),as.character(l1$ID)))
+w1$facehair[w1$facehair==2]<-1 #recode "other" as clean shaven
+l1$facehair[l1$facehair==2]<-1 #recode "other" as clean shaven
+b.out<-set_up_btm(p1,w1,l1)
+
+model.other.outcomes<-BTm(player1=winner,player2=loser,
+                          formula = ~ prev + facehair + ht[ID] + reach[ID]                           + stance[ID] + (1|ID), id="ID",data=b.out)
+summary(model.other.outcomes)
+```
+
+    ## 
+    ## Call:
+    ## BTm(player1 = winner, player2 = loser, formula = ~prev + facehair + 
+    ##     ht[ID] + reach[ID] + stance[ID] + (1 | ID), id = "ID", data = b.out)
+    ## 
+    ## Fixed Effects:
+    ##                     Estimate Std. Error z value Pr(>|z|)
+    ## prev                 0.18480    0.17998   1.027    0.305
+    ## facehair3           -0.31614    0.21795  -1.451    0.147
+    ## ht[ID]               0.04159    0.04688   0.887    0.375
+    ## reach[ID]           -0.05264    0.03867  -1.361    0.174
+    ## stance[ID]other     -0.35028    0.35937  -0.975    0.330
+    ## stance[ID]Southpaw  -0.06714    0.19812  -0.339    0.735
+    ## 
+    ## (Dispersion parameter for binomial family taken to be 1)
+    ## 
+    ## Random Effects:
+    ##           Estimate Std. Error z value Pr(>|z|)   
+    ## Std. Dev.   0.4425     0.1384   3.197  0.00139 **
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -338,7 +447,7 @@ ggplot(predictors,aes(x=ability, fill = beardy)) +
   geom_histogram(binwidth = 0.05)+theme_bw() + labs(fill='Facial hair status') 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
 
 ``` r
 ggsave("figures/plot_hist.pdf")
@@ -353,7 +462,7 @@ predictors$prop.ko<-prop.ko$prop_knocked[match(predictors$name,prop.ko$name)]
 ggplot(predictors,aes(fill=beardy,x=prop.ko))+geom_histogram(binwidth = 0.02)+xlab("Proportion of fights lost by KO or TKO")+ylab("Number of fighters")+theme_bw() + labs(fill="Facial hair status") 
 ```
 
-![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-2.png)
+![](readme_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-2.png)
 
 ``` r
 ggsave("figures/knockout_hist.pdf")
